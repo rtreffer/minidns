@@ -37,8 +37,14 @@ import org.minidns.dnsmessage.DnsMessage;
 import org.minidns.dnsqueryresult.DnsQueryResult;
 import org.minidns.source.AbstractDnsDataSource;
 
+/**
+ * A DNS data sources that resolves requests via the network asynchronously.
+ */
 public class AsyncNetworkDataSource extends AbstractDnsDataSource {
 
+    /**
+     * The logger of this data source.
+     */
     protected static final Logger LOGGER = Logger.getLogger(AsyncNetworkDataSource.class.getName());
 
     private static final int REACTOR_THREAD_COUNT = 1;

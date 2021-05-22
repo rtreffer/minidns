@@ -37,6 +37,9 @@ import org.minidns.source.DnsDataSource.OnResponseCallback;
 import org.minidns.source.AbstractDnsDataSource.QueryMode;
 import org.minidns.util.MultipleIoException;
 
+/**
+ * A DNS request that is performed asynchronously.
+ */
 public class AsyncDnsRequest {
 
     private static final Logger LOGGER = Logger.getLogger(AsyncDnsRequest.class.getName());

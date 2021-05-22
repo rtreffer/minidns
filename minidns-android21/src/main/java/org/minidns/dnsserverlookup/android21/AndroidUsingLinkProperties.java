@@ -50,6 +50,11 @@ public class AndroidUsingLinkProperties extends AbstractDnsServerLookupMechanism
         return androidUsingLinkProperties;
     }
 
+    /**
+     * Construct this DNS server lookup mechanism.
+     *
+     * @param context an Android context.
+     */
     public AndroidUsingLinkProperties(Context context) {
         super(AndroidUsingLinkProperties.class.getSimpleName(), AndroidUsingExec.PRIORITY - 1);
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
