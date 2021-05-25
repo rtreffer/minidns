@@ -99,6 +99,7 @@ public final class Record<D extends Data> {
         CDNSKEY(60),
         OPENPGPKEY(61, OPENPGPKEY.class),
         CSYNC(62),
+        SVCB(65, SVCB.class),
         SPF(99),
         UINFO(100),
         UID(101),
@@ -398,6 +399,9 @@ public final class Record<D extends Data> {
                 break;
             case DLV:
                 payloadData = DLV.parse(dis, payloadLength);
+                break;
+            case SVCB:
+                payloadData = SVCB.parse(dis, payloadLength, data);
                 break;
             case UNKNOWN:
             default:

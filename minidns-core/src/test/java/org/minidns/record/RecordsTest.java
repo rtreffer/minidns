@@ -12,6 +12,9 @@ package org.minidns.record;
 
 import org.minidns.constants.DnssecConstants.DigestAlgorithm;
 import org.minidns.constants.DnssecConstants.SignatureAlgorithm;
+import org.minidns.constants.svcbservicekeys.ServiceKeySpecification;
+import org.minidns.constants.svcbservicekeys.UnrecognizedServiceKey;
+import org.minidns.dnsname.DnsName;
 import org.minidns.record.NSEC3.HashAlgorithm;
 import org.minidns.record.Record.TYPE;
 import org.junit.jupiter.api.Test;
@@ -22,6 +25,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static org.minidns.Assert.assertCsEquals;
 import static org.minidns.Assert.assertArrayContentEquals;
@@ -46,6 +51,24 @@ public class RecordsTest {
         byte[] ab = a.toByteArray();
         a = A.parse(new DataInputStream(new ByteArrayInputStream(ab)));
         assertArrayEquals(new byte[] {127, 0, 0, 1}, a.getIp());
+    }
+
+    @Test
+    public void testSVCBRecord() throws Exception {
+        Set<ServiceKeySpecification<?>> params = new TreeSet<>();
+        params.add(new UnrecognizedServiceKey(new byte[1], 6));
+        params.add(new UnrecognizedServiceKey(new byte[1], 1));
+        params.add(new UnrecognizedServiceKey(new byte[1], 3));
+        SVCB svcb = new SVCB(1, DnsName.from("example.com"), params);
+
+        assertEquals(TYPE.SVCB, svcb.getType());
+
+        // The keys should be ordered ascending
+        String expectedString = "1 example.com alpn=\"nopläintêxt\" port=\"numbers like 1 and very, very long text with spaces in it.\" ipv6hint=\"testing\" 65281=\"unknown\"";
+        assertEquals(expectedString, svcb.toString());
+        byte[] svcbb = svcb.toByteArray();
+        svcb = SVCB.parse(new DataInputStream(new ByteArrayInputStream(svcbb)), svcb.length(), svcbb);
+        assertEquals(expectedString, svcb.toString());
     }
 
     @Test
